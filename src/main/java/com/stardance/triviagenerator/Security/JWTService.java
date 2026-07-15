@@ -37,6 +37,7 @@ public class JWTService {
     }
 
     public String generateToken(Map<String, Object> claims, ApplicationUser user) {
+        System.out.println("generateToken");
         return Jwts.builder()
                 .claims(claims)
                 .subject(user.getId())

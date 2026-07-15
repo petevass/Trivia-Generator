@@ -32,11 +32,13 @@ public class AuthService {
     }
 
     public AuthResponse authenticate(AuthRequest authRequest) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.username(), authRequest.password())
-        );
         ApplicationUser user = userRepository.findByUsername(authRequest.username())
                 .orElseThrow();
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getUsername(), authRequest.password())
+        );
+
+
         return new AuthResponse(jwtService.generateToken(user));
 
     }
