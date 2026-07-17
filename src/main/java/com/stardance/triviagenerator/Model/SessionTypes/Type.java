@@ -4,4 +4,5 @@ public enum Type {
     ANY,
     MULTI_CHOICE,
     TRUE_FALSE,
+    DNE
 }

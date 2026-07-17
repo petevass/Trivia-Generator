@@ -6,6 +6,7 @@ public enum Difficulty {
     ANY,
     EASY,
     MEDIUM,
-    HARD
+    HARD,
+    DNE
 
 }

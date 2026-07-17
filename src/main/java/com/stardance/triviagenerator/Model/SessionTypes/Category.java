@@ -25,5 +25,6 @@ public enum Category {
     COMICS,
     GADGETS,
     ANIMEandMANGA,
-    CARTOONSandANIMATION
+    CARTOONSandANIMATION,
+    DNE
 }
