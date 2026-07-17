@@ -1,9 +1,9 @@
 package com.stardance.triviagenerator.Controller;
 
 import com.stardance.triviagenerator.Data.UserService;
-import com.stardance.triviagenerator.Model.AuthRequest;
-import com.stardance.triviagenerator.Model.AuthResponse;
-import com.stardance.triviagenerator.Model.RegisterRequest;
+import com.stardance.triviagenerator.Model.RequestRecords.AuthRequest;
+import com.stardance.triviagenerator.Model.ResponseRecords.AuthResponse;
+import com.stardance.triviagenerator.Model.RequestRecords.RegisterRequest;
 import com.stardance.triviagenerator.Security.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

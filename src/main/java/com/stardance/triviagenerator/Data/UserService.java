@@ -33,4 +33,8 @@ public class UserService implements UserDetailsService {
     public List<ApplicationUser> findAllByRole(Role role){
         return userRepository.getAllByRole(role);
     }
+
+    public List<ApplicationUser> findAll(){
+        return userRepository.findAll();
+    }
 }

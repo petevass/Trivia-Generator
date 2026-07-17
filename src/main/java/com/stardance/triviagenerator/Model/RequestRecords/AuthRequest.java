@@ -1,4 +1,4 @@
-package com.stardance.triviagenerator.Model;
+package com.stardance.triviagenerator.Model.RequestRecords;
 
 public record AuthRequest(String username, String password) {
 }
