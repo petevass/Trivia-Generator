@@ -1,4 +1,4 @@
 package com.stardance.triviagenerator.Model.RequestRecords;
 
-public record CheckAnswerRequest(String token, String sessionId, String answer) {
+public record CheckAnswerRequest(String sessionId, String answer) {
 }

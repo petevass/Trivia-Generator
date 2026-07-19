@@ -1,8 +1,6 @@
 package com.stardance.triviagenerator.Model;
 
-import com.stardance.triviagenerator.Model.SessionTypes.Category;
-import com.stardance.triviagenerator.Model.SessionTypes.Difficulty;
-import com.stardance.triviagenerator.Model.SessionTypes.Type;
+import com.stardance.triviagenerator.Model.Questions.BooleanQuestion;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -28,16 +25,18 @@ public class Session {
     String userId;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    Category category;
+    int amount;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    Difficulty difficulty;
+    Enum category;
 
-    @Enumerated(EnumType.STRING)
+
     @Column(nullable = false)
-    Type type;
+    Enum difficulty;
+
+
+    @Column(nullable = false)
+    Enum type;
 
     @Column(nullable = false)
     Question currentQuestion;

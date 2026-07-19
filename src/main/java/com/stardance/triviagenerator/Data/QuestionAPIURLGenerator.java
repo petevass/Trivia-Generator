@@ -11,17 +11,14 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@AllArgsConstructor
+
 @Data
 public class QuestionAPIURLGenerator {
 
-    String category;
-    String difficulty;
-    String type;
-    int amount;
 
 
-    public String generateURL(){
+
+    public String generateURL(String category, String difficulty, String type, int amount){
         String url = "https://opentdb.com/api.php?";
         LinkedHashMap<Enum, Integer> params = parametersToEnums(category, difficulty, type);
         ArrayList<Map.Entry<Enum,Integer>> keys = new ArrayList<>(params.entrySet());
@@ -44,11 +41,35 @@ public class QuestionAPIURLGenerator {
 
     }
 
+
+    public String generateURL(Enum category, Enum difficulty, Enum type, Integer amount){
+        String url = "https://opentdb.com/api.php?";
+        int categoryInt = categoryEnumToInteger(category);
+        ArrayList<String> params = enumsToString(difficulty, type);
+
+        url+="amount="+amount+"&";
+
+        if(category!= Category.DNE && category != Category.ANY) {
+            url += "category=" + categoryInt + "&";
+        }
+
+        if(difficulty!= Difficulty.DNE && difficulty != Difficulty.ANY) {
+            url += "difficulty=" + params.get(0)+ "&";
+        }
+
+        if(type != Type.ANY && type != Type.DNE) {
+            url += "type=" + params.get(params.size()-1);
+        }
+
+        return url;
+
+    }
+
     public LinkedHashMap<Enum, Integer> parametersToEnums(String category, String difficulty, String type){
 
         LinkedHashMap<Enum, Integer> enums = new LinkedHashMap<>();
 
-        if(category.equals("any")){
+        if(category.equals("any") ){
             enums.put(Category.ANY, 0);
 
         }else if(category.equals("general knowledge")){
@@ -117,14 +138,90 @@ public class QuestionAPIURLGenerator {
 
         if(type.equals("multiple")){
             enums.put(Type.MULTI_CHOICE, 39);
-        }else if(type.equals("t-f")) {
+        }else if(type.equals("boolean")) {
             enums.put(Type.TRUE_FALSE, 40);
         }else if(type.equals("any")){
             enums.put(Type.ANY, 41);
-        }else if(type.equals("dne")){
+        }else {
             enums.put(Type.DNE, 42);
         }
 
+
+        return enums;
+    }
+
+    public int categoryEnumToInteger(Enum category){
+        if(category== Category.ANY){
+            return 0;
+
+        }else if(category==Category.GENERAL_KNOWLEDGE){
+            return 9;
+        }else if(category==Category.BOOKS){
+            return 10;
+        }else if(category==Category.FILM){
+            return 11;
+        }else if(category==Category.MUSIC){
+            return 12;
+        }else if(category==Category.MUSICALSandTHEATERS){
+            return 13;
+        }else if(category==Category.TV){
+            return 14;
+        }else if(category==Category.VIDEO_GAMES){
+            return 15;
+        }else if(category==Category.BOARD_GAMES){
+            return 16;
+        }else if(category==Category.SCIENCEandNATURE){
+            return 17;
+        }else if(category==Category.SCIENCE_COMPUTERS){
+            return 18;
+        }else if(category==Category.SCIENCE_MATH){
+            return 19;
+        }else if(category==Category.MYTHOLOGY){
+            return 20;
+        }else if(category==Category.SPORTS){
+            return 21;
+        }else if(category==Category.HISTORY){
+            return 22;
+        }else if(category==Category.GEOGRAPHY){
+            return 23;
+        }else if(category==Category.POLITICS){
+            return 24;
+        }else if(category==Category.ART){
+            return 25;
+        }else if(category==Category.CELEBRITIES){
+            return 26;
+        }else if(category==Category.ANIMALS){
+            return 27;
+        }else if(category==Category.VEHICLES){
+            return 28;
+        }else if(category==Category.COMICS){
+            return 29;
+        }else if(category==Category.GADGETS){
+            return 30;
+        }else if(category== Category.ANIMEandMANGA){
+            return 31;
+        }else if(category== Category.CARTOONSandANIMATION){
+            return 32;
+        }else{
+            return 33;
+        }
+    }
+
+    public ArrayList<String> enumsToString(Enum difficulty, Enum type){
+        ArrayList<String> enums = new ArrayList<>();
+        if(difficulty == Difficulty.EASY){
+            enums.add("easy");
+        }else if(difficulty == Difficulty.MEDIUM){
+            enums.add("medium");
+        }else if(difficulty == Difficulty.HARD){
+            enums.add("hard");
+        }
+
+        if(type == Type.MULTI_CHOICE){
+            enums.add("multiple");
+        }else if(type == Type.TRUE_FALSE){
+            enums.add("boolean");
+        }
 
         return enums;
     }

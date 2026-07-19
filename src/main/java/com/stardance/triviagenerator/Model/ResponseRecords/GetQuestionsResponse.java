@@ -1,4 +1,6 @@
 package com.stardance.triviagenerator.Model.ResponseRecords;
 
-public record GetQuestionsResponse(String sessionId, String firstQuestion) {
+import java.util.ArrayList;
+
+public record GetQuestionsResponse(String sessionId, String firstQuestion, ArrayList<String> options) {
 }
