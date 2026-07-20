@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Setup Session')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container my-5" style="max-width:600px">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Configure Your Session</h2>
+        <p style="color:var(--text-muted)">Choose your trivia settings and start playing</p>
+    </div>
+
+    <div class="card p-4">
+        <div id="setup-error" class="alert-custom mb-3"></div>
+
+        <form id="setup-form" novalidate>
+            <!-- Category -->
+            <div class="mb-4">
+                <label class="form-label">Category</label>
+                <select class="form-select" id="category-select">
+                    <option value="any">Any Category</option>
+                    <option value="general knowledge">General Knowledge</option>
+                    <option value="books">Books</option>
+                    <option value="film">Film</option>
+                    <option value="music">Music</option>
+                    <option value="musicals and theaters">Musicals &amp; Theaters</option>
+                    <option value="tv">Television</option>
+                    <option value="video games">Video Games</option>
+                    <option value="board games">Board Games</option>
+                    <option value="science and nature">Science &amp; Nature</option>
+                    <option value="science:computers">Science: Computers</option>
+                    <option value="science:math">Science: Mathematics</option>
+                    <option value="mythology">Mythology</option>
+                    <option value="sports">Sports</option>
+                    <option value="history">History</option>
+                    <option value="geography">Geography</option>
+                    <option value="politics">Politics</option>
+                    <option value="art">Art</option>
+                    <option value="celebrities">Celebrities</option>
+                    <option value="animals">Animals</option>
+                    <option value="vehicles">Vehicles</option>
+                    <option value="comics">Comics</option>
+                    <option value="gadgets">Gadgets</option>
+                    <option value="anime and manga">Anime &amp; Manga</option>
+                    <option value="cartoons and animation">Cartoons &amp; Animation</option>
+                </select>
+            </div>
+
+            <!-- Difficulty -->
+            <div class="mb-4">
+                <label class="form-label">Difficulty</label>
+                <div>
+                    <button type="button" class="option-btn selected" data-difficulty="any">Any</button>
+                    <button type="button" class="option-btn" data-difficulty="easy">Easy</button>
+                    <button type="button" class="option-btn" data-difficulty="medium">Medium</button>
+                    <button type="button" class="option-btn" data-difficulty="hard">Hard</button>
+                </div>
+            </div>
+
+            <!-- Type -->
+            <div class="mb-4">
+                <label class="form-label">Question Type</label>
+                <div>
+                    <button type="button" class="option-btn selected" data-type="any">Any</button>
+                    <button type="button" class="option-btn" data-type="multiple">Multiple Choice</button>
+                    <button type="button" class="option-btn" data-type="boolean">True / False</button>
+                </div>
+            </div>
+
+            <!-- Amount -->
+            <div class="mb-5">
+                <label class="form-label">
+                    Number of Questions:
+                    <span id="amount-display" class="fw-bold ms-1" style="color:var(--accent)">10</span>
+                </label>
+                <input type="range" class="form-range" id="amount-slider" min="1" max="50" value="10"/>
+                <div class="d-flex justify-content-between mt-1">
+                    <small style="color:var(--text-muted)">1</small>
+                    <small style="color:var(--text-muted)">50</small>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 py-2" id="start-btn">
+                <i class="bi bi-play-fill me-2"></i>Start Session
+            </button>
+        </form>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"/>
+<script th:src="@{/js/setup.js}"></script>
+</body>
+</html>

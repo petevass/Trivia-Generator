@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Login')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container d-flex align-items-center justify-content-center" style="min-height:80vh">
+    <div class="w-100" style="max-width:460px">
+        <div class="text-center mb-4">
+            <i class="bi bi-lightning-charge-fill" style="font-size:2.5rem;color:var(--accent)"></i>
+            <h3 class="fw-bold mt-2">TriviaGen</h3>
+            <p style="color:var(--text-muted)">Sign in to track your scores</p>
+        </div>
+
+        <div class="card p-4">
+            <!-- Tabs -->
+            <ul class="nav nav-tabs mb-4">
+                <li class="nav-item flex-grow-1 text-center">
+                    <a class="nav-link active" id="login-tab" href="#" onclick="switchTab('login'); return false;">Login</a>
+                </li>
+                <li class="nav-item flex-grow-1 text-center">
+                    <a class="nav-link" id="register-tab" href="#" onclick="switchTab('register'); return false;">Register</a>
+                </li>
+            </ul>
+
+            <div id="error-alert" class="alert-custom mb-3"></div>
+
+            <!-- Login -->
+            <form id="login-form" novalidate>
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-control" id="login-username" placeholder="Enter username" autocomplete="username" required/>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" id="login-password" placeholder="Enter password" autocomplete="current-password" required/>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2" id="login-btn">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                </button>
+            </form>
+
+            <!-- Register -->
+            <form id="register-form" class="d-none" novalidate>
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-control" id="reg-username" placeholder="Choose a username" autocomplete="username" required/>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" id="reg-email" placeholder="Enter your email" autocomplete="email" required/>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" id="reg-password" placeholder="Choose a password" autocomplete="new-password" required/>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2" id="register-btn">
+                    <i class="bi bi-person-plus me-2"></i>Create Account
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="~{fragments/layout :: scripts}"/>
+<script th:src="@{/js/login.js}"></script>
+</body>
+</html>

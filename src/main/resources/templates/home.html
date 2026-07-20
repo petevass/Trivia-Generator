@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Home')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<!-- Hero -->
+<div class="hero">
+    <div class="container position-relative" style="z-index:1">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <h1 class="hero-title">Test Your<br>Knowledge</h1>
+                <p class="hero-subtitle">Challenge yourself with thousands of trivia questions across dozens of categories. Compete on the leaderboard and track your progress.</p>
+
+                <!-- Guest -->
+                <div id="guest-actions">
+                    <a href="/pages/login" class="btn btn-primary btn-lg me-3">
+                        <i class="bi bi-person-plus me-2"></i>Get Started
+                    </a>
+                    <a href="/pages/login" class="btn btn-outline-primary btn-lg">
+                        <i class="bi bi-person-fill me-2"></i>Login
+                    </a>
+                </div>
+                <!-- User -->
+                <div id="user-actions" class="d-none">
+                    <a href="/pages/session/setup" class="btn btn-primary btn-lg me-3">
+                        <i class="bi bi-play-fill me-2"></i>Play Now
+                    </a>
+                    <a href="/pages/profile" class="btn btn-outline-primary btn-lg me-2">
+                        <i class="bi bi-person-circle me-2"></i>My Profile
+                    </a>
+                    <a href="/pages/leaderboard" class="btn btn-outline-light btn-lg">
+                        <i class="bi bi-trophy me-2"></i>Leaderboard
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5 text-center d-none d-lg-block">
+                <i class="bi bi-lightning-charge-fill" style="font-size:10rem;opacity:0.12;color:var(--accent)"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User quick stats -->
+<div id="user-stats" class="container my-5 d-none">
+    <h5 class="fw-bold mb-4 text-center text-muted text-uppercase" style="letter-spacing:2px;font-size:.8rem">Your Stats</h5>
+    <div class="row g-3 justify-content-center">
+        <div class="col-md-3 col-6">
+            <div class="stat-card">
+                <div class="stat-number" id="home-total" style="color:var(--accent)">—</div>
+                <div class="stat-label">Total Answered</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stat-card">
+                <div class="stat-number" id="home-correct" style="color:var(--success)">—</div>
+                <div class="stat-label">Correct</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stat-card">
+                <div class="stat-number" id="home-accuracy" style="color:var(--warning)">—</div>
+                <div class="stat-label">Accuracy</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features -->
+<div class="container my-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 text-center p-3">
+                <div class="card-body">
+                    <i class="bi bi-grid-3x3-gap-fill mb-3" style="font-size:2.5rem;color:var(--accent)"></i>
+                    <h5 class="fw-bold">24+ Categories</h5>
+                    <p class="small" style="color:var(--text-muted)">From general knowledge to anime, history to science.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 text-center p-3">
+                <div class="card-body">
+                    <i class="bi bi-bar-chart-fill mb-3" style="font-size:2.5rem;color:var(--success)"></i>
+                    <h5 class="fw-bold">Track Progress</h5>
+                    <p class="small" style="color:var(--text-muted)">Every answer builds your stats. Watch your accuracy improve over time.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 text-center p-3">
+                <div class="card-body">
+                    <i class="bi bi-trophy-fill mb-3" style="font-size:2.5rem;color:var(--warning)"></i>
+                    <h5 class="fw-bold">Compete</h5>
+                    <p class="small" style="color:var(--text-muted)">Climb the leaderboard and compare scores against other players.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"/>
+<script th:src="@{/js/home.js}"></script>
+</body>
+</html>

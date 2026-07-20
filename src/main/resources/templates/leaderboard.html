@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Leaderboard')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">
+            <i class="bi bi-trophy-fill me-2" style="color:var(--warning)"></i>Leaderboard
+        </h2>
+        <p style="color:var(--text-muted)">Top 10 players ranked by performance</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Most Active -->
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <i class="bi bi-activity me-2" style="color:var(--accent)"></i>Most Active
+                    <small class="float-end" style="color:var(--text-muted);font-size:.75rem;font-weight:400">by total answered</small>
+                </div>
+                <div class="card-body p-3">
+                    <div class="table-responsive">
+                        <table class="table leaderboard-table mb-0">
+                            <thead>
+                                <tr style="color:var(--text-muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px">
+                                    <th class="border-0 pb-2">Rank</th>
+                                    <th class="border-0 pb-2">Player</th>
+                                    <th class="border-0 pb-2">Answered</th>
+                                    <th class="border-0 pb-2">Correct</th>
+                                </tr>
+                            </thead>
+                            <tbody id="total-table">
+                                <tr><td colspan="4" class="text-center py-4" style="color:var(--text-muted)">
+                                    <div class="spinner-border spinner-border-sm me-2" style="color:var(--accent)"></div>Loading...
+                                </td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Scorers -->
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <i class="bi bi-star-fill me-2" style="color:var(--warning)"></i>Top Scorers
+                    <small class="float-end" style="color:var(--text-muted);font-size:.75rem;font-weight:400">by correct answers</small>
+                </div>
+                <div class="card-body p-3">
+                    <div class="table-responsive">
+                        <table class="table leaderboard-table mb-0">
+                            <thead>
+                                <tr style="color:var(--text-muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px">
+                                    <th class="border-0 pb-2">Rank</th>
+                                    <th class="border-0 pb-2">Player</th>
+                                    <th class="border-0 pb-2">Answered</th>
+                                    <th class="border-0 pb-2">Correct</th>
+                                </tr>
+                            </thead>
+                            <tbody id="correct-table">
+                                <tr><td colspan="4" class="text-center py-4" style="color:var(--text-muted)">
+                                    <div class="spinner-border spinner-border-sm me-2" style="color:var(--accent)"></div>Loading...
+                                </td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"/>
+<script th:src="@{/js/leaderboard.js}"></script>
+</body>
+</html>
