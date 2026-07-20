@@ -33,8 +33,6 @@ public class ApplicationUser implements UserDetails {
     @Column(nullable = false)
     Role role;
 
-    @Column(nullable = false)
-    int dayStreak;
 
     @Column(nullable = false)
     int totalTriviaQuestionsAnswered;

@@ -1,6 +1,5 @@
 package com.stardance.triviagenerator.Model;
 
-import com.stardance.triviagenerator.Model.Questions.BooleanQuestion;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,11 +20,14 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.UUID)
     String Id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     String userId;
 
     @Column(nullable = false)
     int amount;
+
+    @Column(nullable = false)
+    int correctQuestions;
 
     @Column(nullable = false)
     Enum category;

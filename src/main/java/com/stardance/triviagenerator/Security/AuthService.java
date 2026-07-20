@@ -30,7 +30,6 @@ public class AuthService {
                 .username(request.username())
                 .password(passwordEncoder.encode(request.password()))
                 .role(Role.USER)
-                .dayStreak(0)
                 .totalTriviaQuestionsAnswered(0)
                 .totalTriviaQuestionsCorrectlyAnswered(0)
                 .build();

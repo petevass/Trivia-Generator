@@ -2,6 +2,8 @@ package com.stardance.triviagenerator.Controller;
 
 import com.stardance.triviagenerator.Data.QuestionAPIURLGenerator;
 import com.stardance.triviagenerator.Data.SessionRepository;
+import com.stardance.triviagenerator.Data.UserRepository;
+import com.stardance.triviagenerator.Data.UserService;
 import com.stardance.triviagenerator.Model.ApplicationUser;
 
 import com.stardance.triviagenerator.Model.Question;
@@ -9,6 +11,7 @@ import com.stardance.triviagenerator.Model.RequestRecords.CheckAnswerRequest;
 import com.stardance.triviagenerator.Model.RequestRecords.GetQuestionsRequest;
 import com.stardance.triviagenerator.Model.RequestRecords.StartSessionRequest;
 import com.stardance.triviagenerator.Model.ResponseRecords.CheckAnswerResponse;
+import com.stardance.triviagenerator.Model.ResponseRecords.EndingResponse;
 import com.stardance.triviagenerator.Model.ResponseRecords.GetQuestionsResponse;
 import com.stardance.triviagenerator.Model.ResponseRecords.StartSessionResponse;
 import com.stardance.triviagenerator.Model.Session;
@@ -45,6 +48,10 @@ public class SessionController {
     private final SessionRepository sessionRepository;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
 
     @PostMapping("/start")
@@ -65,6 +72,9 @@ public class SessionController {
             return ResponseEntity.status(401).body("Not a valid type");
         }
 
+        if(sessionRepository.existsByUserId(user.getId())){
+            return ResponseEntity.status(401).body("User already has a session open");
+        }
 
         s.setUserId(user.getId());
         s.setCategory(keys.get(0).getKey());
@@ -128,7 +138,7 @@ public class SessionController {
     }
 
     @PostMapping("/check_answer")
-    public ResponseEntity<?> checkAnswer(@RequestBody CheckAnswerRequest checkAnswerRequest) {
+    public ResponseEntity<?> checkAnswer(@AuthenticationPrincipal ApplicationUser user,  @RequestBody CheckAnswerRequest checkAnswerRequest) {
 
         Session s = sessionRepository.findById(checkAnswerRequest.sessionId()).orElse(null);
         if(s == null){
@@ -142,14 +152,44 @@ public class SessionController {
 
         if(checkAnswerRequest.answer().equalsIgnoreCase(s.getCurrentQuestion().getAnswer())){
             resp.setWasCorrect(true);
+            int x =s.getCorrectQuestions()+1;
+            s.setCorrectQuestions(x);
         }
 
         int index = s.getQuestions().indexOf(s.getCurrentQuestion());
         index++;
-        s.setCurrentQuestion(s.getQuestions().get(index));
+        if(index < s.getQuestions().size()) {
+            s.setCurrentQuestion(s.getQuestions().get(index));
+        }else{
+            String message = "Congratulations "+user.getUsername()+"! You have finished all of your questions in this session. Session Over";
+            sessionRepository.delete(s);
+            return ResponseEntity.status(200).body(new EndingResponse(message, s.getCorrectQuestions(), s.getAmount()));
+        }
 
+        ArrayList<String> options = s.getCurrentQuestion().getIncorrectAnswers();
+        options.add(s.getCurrentQuestion().getAnswer());
+        Collections.shuffle(options);
+        resp.setOptions(options);
+        resp.setNextQuestion(s.getCurrentQuestion().getQuestion());
 
-        return ResponseEntity.status(200).body("Answer is Correct");
+        return ResponseEntity.status(200).body(resp);
+    }
+
+    @PostMapping("/end_session")
+    public ResponseEntity<?> endSession(@AuthenticationPrincipal ApplicationUser user){
+        Session s = sessionRepository.findById(user.getId()).orElse(null);
+        if(s == null){
+            return ResponseEntity.status(401).body("User does not have a session open");
+        }
+        ApplicationUser u = userService.loadById(s.getUserId());
+
+        int questionsAnswered = s.getAmount()+u.getTotalTriviaQuestionsAnswered();
+        int correct = s.getCorrectQuestions()+ u.getTotalTriviaQuestionsCorrectlyAnswered();
+        u.setTotalTriviaQuestionsAnswered(questionsAnswered);
+        u.setTotalTriviaQuestionsCorrectlyAnswered(correct);
+        sessionRepository.delete(s);
+        userRepository.save(u);
+        return ResponseEntity.status(200).body("session has been successfully ended");
     }
 
 }
