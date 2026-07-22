@@ -160,9 +160,16 @@ public class SessionController {
         index++;
         if(index < s.getQuestions().size()) {
             s.setCurrentQuestion(s.getQuestions().get(index));
+            sessionRepository.save(s);
         }else{
             String message = "Congratulations "+user.getUsername()+"! You have finished all of your questions in this session. Session Over";
             sessionRepository.delete(s);
+
+            int questionsAnswered = s.getAmount()+user.getTotalTriviaQuestionsAnswered();
+            int correct = s.getCorrectQuestions()+ user.getTotalTriviaQuestionsCorrectlyAnswered();
+            user.setTotalTriviaQuestionsAnswered(questionsAnswered);
+            user.setTotalTriviaQuestionsCorrectlyAnswered(correct);
+            userRepository.save(user);
             return ResponseEntity.status(200).body(new EndingResponse(message, s.getCorrectQuestions(), s.getAmount()));
         }
 
@@ -175,20 +182,23 @@ public class SessionController {
         return ResponseEntity.status(200).body(resp);
     }
 
-    @PostMapping("/end_session")
+    @GetMapping("/end_session")
     public ResponseEntity<?> endSession(@AuthenticationPrincipal ApplicationUser user){
-        Session s = sessionRepository.findById(user.getId()).orElse(null);
+        Session s = sessionRepository.findByUserId(user.getId());
+        System.out.println(user.getId());
         if(s == null){
             return ResponseEntity.status(401).body("User does not have a session open");
         }
-        ApplicationUser u = userService.loadById(s.getUserId());
 
-        int questionsAnswered = s.getAmount()+u.getTotalTriviaQuestionsAnswered();
+        ApplicationUser u = userRepository.findById(user.getId()).orElse(null);
+        int questionsAnswered = s.getQuestions().indexOf(s.getCurrentQuestion())+u.getTotalTriviaQuestionsAnswered();
         int correct = s.getCorrectQuestions()+ u.getTotalTriviaQuestionsCorrectlyAnswered();
         u.setTotalTriviaQuestionsAnswered(questionsAnswered);
         u.setTotalTriviaQuestionsCorrectlyAnswered(correct);
         sessionRepository.delete(s);
         userRepository.save(u);
+
+
         return ResponseEntity.status(200).body("session has been successfully ended");
     }
 
