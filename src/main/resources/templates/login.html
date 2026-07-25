@@ -4,63 +4,86 @@
 <body>
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
 
-<div class="container d-flex align-items-center justify-content-center" style="min-height:80vh">
-    <div class="w-100" style="max-width:460px">
-        <div class="text-center mb-4">
-            <i class="bi bi-lightning-charge-fill" style="font-size:2.5rem;color:var(--accent)"></i>
-            <h3 class="fw-bold mt-2">TriviaGen</h3>
-            <p style="color:var(--text-muted)">Sign in to track your scores</p>
+<main class="flex-1 flex items-center justify-center px-4 py-12">
+    <div class="w-full max-w-md">
+
+        <!-- Branding -->
+        <div class="text-center mb-7">
+            <i class="bi bi-lightning-charge-fill block mb-3" style="font-size:3.5rem;color:#a78bfa"></i>
+            <h2 class="text-3xl font-black mb-1 text-white">TriviaGen</h2>
+            <p class="font-semibold" style="color:#c4b5fd">Sign in to track your scores</p>
         </div>
 
-        <div class="card p-4">
+        <!-- Card -->
+        <div class="rounded-2xl p-7 shadow-2xl" style="background:#3a1578;border:1px solid #5d2dac">
+
             <!-- Tabs -->
-            <ul class="nav nav-tabs mb-4">
-                <li class="nav-item flex-grow-1 text-center">
-                    <a class="nav-link active" id="login-tab" href="#" onclick="switchTab('login'); return false;">Login</a>
-                </li>
-                <li class="nav-item flex-grow-1 text-center">
-                    <a class="nav-link" id="register-tab" href="#" onclick="switchTab('register'); return false;">Register</a>
-                </li>
-            </ul>
+            <div class="flex mb-6" style="border-bottom:2px solid #4c2398">
+                <button id="login-tab"    class="tab-link active" onclick="switchTab('login');    return false;">Login</button>
+                <button id="register-tab" class="tab-link"        onclick="switchTab('register'); return false;">Register</button>
+            </div>
 
-            <div id="error-alert" class="alert-custom mb-3"></div>
+            <!-- Error alert -->
+            <div id="error-alert" class="alert-custom mb-4"></div>
 
-            <!-- Login -->
+            <!-- Login form -->
             <form id="login-form" novalidate>
-                <div class="mb-3">
-                    <label class="form-label">Username</label>
-                    <input type="text" class="form-control" id="login-username" placeholder="Enter username" autocomplete="username" required/>
-                </div>
                 <div class="mb-4">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-control" id="login-password" placeholder="Enter password" autocomplete="current-password" required/>
+                    <label class="block text-xs font-black uppercase tracking-wider mb-2" style="color:#c4b5fd">Username</label>
+                    <input type="text" id="login-username" placeholder="Enter username" autocomplete="username" required
+                           class="w-full text-white rounded-xl px-4 py-2.5 outline-none font-semibold transition-colors placeholder-purple-400"
+                           style="background:#2d1265;border:2px solid #5d2dac"
+                           onfocus="this.style.borderColor='#fff'" onblur="this.style.borderColor='#5d2dac'"/>
                 </div>
-                <button type="submit" class="btn btn-primary w-100 py-2" id="login-btn">
-                    <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                <div class="mb-6">
+                    <label class="block text-xs font-black uppercase tracking-wider mb-2" style="color:#c4b5fd">Password</label>
+                    <input type="password" id="login-password" placeholder="Enter password" autocomplete="current-password" required
+                           class="w-full text-white rounded-xl px-4 py-2.5 outline-none font-semibold transition-colors placeholder-purple-400"
+                           style="background:#2d1265;border:2px solid #5d2dac"
+                           onfocus="this.style.borderColor='#fff'" onblur="this.style.borderColor='#5d2dac'"/>
+                </div>
+                <button type="submit" id="login-btn"
+                        class="w-full font-black py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 active:scale-[0.98]"
+                        style="background:#fff;color:#2d1265"
+                        onmouseover="this.style.background='#e9d5ff'" onmouseout="this.style.background='#fff'">
+                    <i class="bi bi-box-arrow-in-right"></i>Login
                 </button>
             </form>
 
-            <!-- Register -->
+            <!-- Register form -->
             <form id="register-form" class="d-none" novalidate>
-                <div class="mb-3">
-                    <label class="form-label">Username</label>
-                    <input type="text" class="form-control" id="reg-username" placeholder="Choose a username" autocomplete="username" required/>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-control" id="reg-email" placeholder="Enter your email" autocomplete="email" required/>
+                <div class="mb-4">
+                    <label class="block text-xs font-black uppercase tracking-wider mb-2" style="color:#c4b5fd">Username</label>
+                    <input type="text" id="reg-username" placeholder="Choose a username" autocomplete="username" required
+                           class="w-full text-white rounded-xl px-4 py-2.5 outline-none font-semibold transition-colors placeholder-purple-400"
+                           style="background:#2d1265;border:2px solid #5d2dac"
+                           onfocus="this.style.borderColor='#fff'" onblur="this.style.borderColor='#5d2dac'"/>
                 </div>
                 <div class="mb-4">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-control" id="reg-password" placeholder="Choose a password" autocomplete="new-password" required/>
+                    <label class="block text-xs font-black uppercase tracking-wider mb-2" style="color:#c4b5fd">Email</label>
+                    <input type="email" id="reg-email" placeholder="Enter your email" autocomplete="email" required
+                           class="w-full text-white rounded-xl px-4 py-2.5 outline-none font-semibold transition-colors placeholder-purple-400"
+                           style="background:#2d1265;border:2px solid #5d2dac"
+                           onfocus="this.style.borderColor='#fff'" onblur="this.style.borderColor='#5d2dac'"/>
                 </div>
-                <button type="submit" class="btn btn-primary w-100 py-2" id="register-btn">
-                    <i class="bi bi-person-plus me-2"></i>Create Account
+                <div class="mb-6">
+                    <label class="block text-xs font-black uppercase tracking-wider mb-2" style="color:#c4b5fd">Password</label>
+                    <input type="password" id="reg-password" placeholder="Choose a password" autocomplete="new-password" required
+                           class="w-full text-white rounded-xl px-4 py-2.5 outline-none font-semibold transition-colors placeholder-purple-400"
+                           style="background:#2d1265;border:2px solid #5d2dac"
+                           onfocus="this.style.borderColor='#fff'" onblur="this.style.borderColor='#5d2dac'"/>
+                </div>
+                <button type="submit" id="register-btn"
+                        class="w-full font-black py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 active:scale-[0.98]"
+                        style="background:#fff;color:#2d1265"
+                        onmouseover="this.style.background='#e9d5ff'" onmouseout="this.style.background='#fff'">
+                    <i class="bi bi-person-plus"></i>Create Account
                 </button>
             </form>
+
         </div>
     </div>
-</div>
+</main>
 
 <th:block th:replace="~{fragments/layout :: scripts}"/>
 <script th:src="@{/js/login.js}"></script>

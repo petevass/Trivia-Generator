@@ -4,74 +4,77 @@
 <body>
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
 
-<div class="container my-5">
-    <div class="text-center mb-5">
-        <h2 class="fw-bold">
-            <i class="bi bi-trophy-fill me-2" style="color:var(--warning)"></i>Leaderboard
+<main class="flex-1">
+<div class="max-w-6xl mx-auto px-4 mt-12 mb-16">
+
+    <div class="text-center mb-10">
+        <h2 class="text-3xl font-black mb-2 text-white">
+            <i class="bi bi-trophy-fill text-yellow-300 mr-2"></i>Leaderboard
         </h2>
-        <p style="color:var(--text-muted)">Top 10 players ranked by performance</p>
+        <p class="font-semibold" style="color:#c4b5fd">Top 10 players ranked by performance</p>
     </div>
 
-    <div class="row g-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
         <!-- Most Active -->
-        <div class="col-lg-6">
-            <div class="card h-100">
-                <div class="card-header">
-                    <i class="bi bi-activity me-2" style="color:var(--accent)"></i>Most Active
-                    <small class="float-end" style="color:var(--text-muted);font-size:.75rem;font-weight:400">by total answered</small>
-                </div>
-                <div class="card-body p-3">
-                    <div class="table-responsive">
-                        <table class="table leaderboard-table mb-0">
-                            <thead>
-                                <tr style="color:var(--text-muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px">
-                                    <th class="border-0 pb-2">Rank</th>
-                                    <th class="border-0 pb-2">Player</th>
-                                    <th class="border-0 pb-2">Answered</th>
-                                    <th class="border-0 pb-2">Correct</th>
-                                </tr>
-                            </thead>
-                            <tbody id="total-table">
-                                <tr><td colspan="4" class="text-center py-4" style="color:var(--text-muted)">
-                                    <div class="spinner-border spinner-border-sm me-2" style="color:var(--accent)"></div>Loading...
-                                </td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        <div class="rounded-2xl overflow-hidden" style="background:#3a1578;border:1px solid #5d2dac">
+            <div class="px-5 py-3 font-bold flex items-center justify-between" style="background:rgba(76,35,152,0.5);border-bottom:1px solid #5d2dac">
+                <span class="text-white"><i class="bi bi-activity mr-2" style="color:#a78bfa"></i>Most Active</span>
+                <span class="text-xs font-normal" style="color:#7c5fc0">by total answered</span>
+            </div>
+            <div class="p-4 overflow-x-auto">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Answered</th>
+                            <th>Correct</th>
+                        </tr>
+                    </thead>
+                    <tbody id="total-table">
+                        <tr>
+                            <td colspan="4" class="text-center py-6" style="color:#7c5fc0">
+                                <div class="w-5 h-5 rounded-full animate-spin inline-block mr-2" style="border:2px solid #4c2398;border-top-color:#a78bfa"></div>
+                                Loading...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
         <!-- Top Scorers -->
-        <div class="col-lg-6">
-            <div class="card h-100">
-                <div class="card-header">
-                    <i class="bi bi-star-fill me-2" style="color:var(--warning)"></i>Top Scorers
-                    <small class="float-end" style="color:var(--text-muted);font-size:.75rem;font-weight:400">by correct answers</small>
-                </div>
-                <div class="card-body p-3">
-                    <div class="table-responsive">
-                        <table class="table leaderboard-table mb-0">
-                            <thead>
-                                <tr style="color:var(--text-muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px">
-                                    <th class="border-0 pb-2">Rank</th>
-                                    <th class="border-0 pb-2">Player</th>
-                                    <th class="border-0 pb-2">Answered</th>
-                                    <th class="border-0 pb-2">Correct</th>
-                                </tr>
-                            </thead>
-                            <tbody id="correct-table">
-                                <tr><td colspan="4" class="text-center py-4" style="color:var(--text-muted)">
-                                    <div class="spinner-border spinner-border-sm me-2" style="color:var(--accent)"></div>Loading...
-                                </td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        <div class="rounded-2xl overflow-hidden" style="background:#3a1578;border:1px solid #5d2dac">
+            <div class="px-5 py-3 font-bold flex items-center justify-between" style="background:rgba(76,35,152,0.5);border-bottom:1px solid #5d2dac">
+                <span class="text-white"><i class="bi bi-star-fill text-yellow-300 mr-2"></i>Top Scorers</span>
+                <span class="text-xs font-normal" style="color:#7c5fc0">by correct answers</span>
+            </div>
+            <div class="p-4 overflow-x-auto">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Answered</th>
+                            <th>Correct</th>
+                        </tr>
+                    </thead>
+                    <tbody id="correct-table">
+                        <tr>
+                            <td colspan="4" class="text-center py-6" style="color:#7c5fc0">
+                                <div class="w-5 h-5 rounded-full animate-spin inline-block mr-2" style="border:2px solid #4c2398;border-top-color:#a78bfa"></div>
+                                Loading...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
+
     </div>
 </div>
+</main>
 
 <footer th:replace="~{fragments/layout :: footer}"></footer>
 <th:block th:replace="~{fragments/layout :: scripts}"/>

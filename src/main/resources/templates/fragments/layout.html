@@ -4,48 +4,55 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="${pageTitle} + ' | TriviaGen'">TriviaGen</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
 
-<nav th:fragment="navbar" class="navbar navbar-expand-lg">
-    <div class="container">
-        <a class="navbar-brand" href="/"><i class="bi bi-lightning-charge-fill me-1"></i>TriviaGen</a>
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
-            <i class="bi bi-list text-light" style="font-size:1.5rem"></i>
+<nav th:fragment="navbar" class=" px-4 sticky top-0 z-50 shadow-xl" style="background:#1a0540;border-bottom:2px solid #4c2398;">
+    <div class="max-w-screen-xl mx-auto flex items-center justify-between py-3 gap-4 flex-wrap">
+        <a href="/" class="text-xl font-black text-white hover:text-purple-200 transition-colors flex items-center gap-1 shrink-0">
+            <i class="bi bi-lightning-charge-fill" style="color:#a78bfa"></i>TriviaGen
+        </a>
+        <!-- Hamburger — mobile only -->
+        <button class="text-purple-300 hover:text-white transition-colors p-1 md:hidden"
+                onclick="document.getElementById('navMenu').classList.toggle('hidden')">
+            <i class="bi bi-list text-2xl"></i>
         </button>
-        <div class="collapse navbar-collapse" id="navContent">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link" href="/"><i class="bi bi-house me-1"></i>Home</a></li>
-            </ul>
-            <!-- Not logged in -->
-            <div id="nav-auth-section" class="d-none">
-                <a href="/pages/login" class="btn btn-outline-primary btn-sm me-2">Login</a>
-                <a href="/pages/login?tab=register" class="btn btn-primary btn-sm">Register</a>
+        <!-- Nav links -->
+        <div id="navMenu" class="hidden md:flex flex-col md:flex-row md:items-center gap-1 w-full md:w-auto pb-3 md:pb-0">
+            <a href="/" class="text-purple-200 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg font-bold transition-all text-sm">
+                <i class="bi bi-house mr-1"></i>Home
+            </a>
+            <!-- Not logged in (auth.js toggles d-none) -->
+            <div id="nav-auth-section" class="d-none flex items-center gap-2">
+                <a href="/pages/login" class="text-sm font-bold text-white border-2 border-white/50 px-4 py-1.5 rounded-xl hover:bg-white hover:text-[#2d1265] transition-all">Login</a>
+                <a href="/pages/login?tab=register" class="text-sm font-black bg-white text-[#2d1265] px-4 py-1.5 rounded-xl hover:bg-purple-100 transition-all shadow">Register</a>
             </div>
-            <!-- Logged in -->
-            <div id="nav-user-section" class="d-none d-flex align-items-center gap-2">
-                <a class="nav-link" href="/pages/leaderboard"><i class="bi bi-trophy me-1"></i>Leaderboard</a>
-                <a class="nav-link" href="/pages/session/setup"><i class="bi bi-play-circle me-1"></i>Play</a>
-                <a class="nav-link" href="/pages/profile"><i class="bi bi-person-circle me-1"></i>Profile</a>
-                <button class="btn btn-sm btn-outline-danger ms-2" onclick="logout()">
-                    <i class="bi bi-box-arrow-right me-1"></i>Logout
+            <!-- Logged in (auth.js toggles d-none) -->
+            <div id="nav-user-section" class="d-none flex flex-wrap items-center gap-1">
+                <a href="/pages/leaderboard" class="text-purple-200 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg font-bold transition-all text-sm"><i class="bi bi-trophy mr-1"></i>Leaderboard</a>
+                <a href="/pages/session/setup" class="text-purple-200 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg font-bold transition-all text-sm"><i class="bi bi-play-circle mr-1"></i>Play</a>
+                <a href="/pages/profile" class="text-purple-200 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg font-bold transition-all text-sm"><i class="bi bi-person-circle mr-1"></i>Profile</a>
+                <button onclick="logout()" class="text-sm font-bold text-red-400 border-2 border-red-400/50 px-3 py-1.5 rounded-xl hover:bg-red-500 hover:text-white hover:border-red-500 transition-all">
+                    <i class="bi bi-box-arrow-right mr-1"></i>Logout
                 </button>
             </div>
         </div>
     </div>
 </nav>
 
-<footer th:fragment="footer">
-    <div class="container text-center">
-        <p class="mb-0"><i class="bi bi-lightning-charge-fill me-1" style="color:var(--accent)"></i>TriviaGen &copy; 2025</p>
+<footer th:fragment="footer" class="mt-auto py-6 text-center font-bold text-sm" style="background:#1a0540;border-top:2px solid #4c2398;color:#c4b5fd;">
+    <div class="max-w-6xl mx-auto px-4">
+        <p><i class="bi bi-lightning-charge-fill mr-1" style="color:#a78bfa"></i>TriviaGen &copy; 2025</p>
     </div>
 </footer>
 
 <th:block th:fragment="scripts">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script th:src="@{/js/auth.js}"></script>
 </th:block>
 

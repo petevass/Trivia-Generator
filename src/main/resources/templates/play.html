@@ -4,78 +4,95 @@
 <body>
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
 
-<div class="container my-4" style="max-width:740px">
+<!-- Static screens: loading / error / results -->
+<div id="static-screens" class="flex-1 max-w-xl mx-auto px-4 mt-10 mb-16">
 
     <!-- Loading -->
-    <div id="loading-screen" class="text-center py-5">
-        <div class="spinner-border" style="color:var(--accent);width:3rem;height:3rem" role="status"></div>
-        <p class="mt-3" style="color:var(--text-muted)">Loading questions...</p>
+    <div id="loading-screen" class="text-center py-20">
+        <div class="w-12 h-12 rounded-full animate-spin mx-auto mb-4" style="border:4px solid #4c2398;border-top-color:#a78bfa"></div>
+        <p class="font-semibold" style="color:#c4b5fd">Loading questions...</p>
     </div>
 
     <!-- Error -->
-    <div id="error-screen" class="d-none text-center py-5">
-        <i class="bi bi-exclamation-triangle-fill mb-3 d-block" style="font-size:3rem;color:var(--danger)"></i>
-        <p id="error-msg" class="mb-4" style="color:var(--text-muted)">Something went wrong.</p>
-        <a href="/pages/session/setup" class="btn btn-primary">Start New Session</a>
-    </div>
-
-    <!-- Game -->
-    <div id="game-screen" class="d-none">
-        <!-- Top bar -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div style="color:var(--text-muted);font-size:.9rem">
-                Question <span id="progress-text" class="fw-bold" style="color:var(--text)">1</span>
-            </div>
-            <div>
-                <span style="color:var(--text-muted);font-size:.9rem">Score: </span>
-                <span id="current-score" class="fw-bold" style="color:var(--success);font-size:1.1rem">0</span>
-            </div>
-            <button id="end-session-btn" class="btn btn-sm btn-outline-danger">
-                <i class="bi bi-stop-circle me-1"></i>End
-            </button>
-        </div>
-
-        <!-- Progress bar -->
-        <div class="progress mb-4" style="height:.5rem">
-            <div class="progress-bar" id="progress-bar" style="width:0%"></div>
-        </div>
-
-        <!-- Feedback banner -->
-        <div id="feedback-banner" class="feedback-banner"></div>
-
-        <!-- Question -->
-        <div class="question-card">
-            <p class="question-text" id="question-text">Loading...</p>
-        </div>
-
-        <!-- Answers -->
-        <div id="answers-container" class="mt-3"></div>
+    <div id="error-screen" class="d-none text-center py-20">
+        <i class="bi bi-exclamation-triangle-fill text-red-400 block mb-4" style="font-size:3rem"></i>
+        <p id="error-msg" class="font-semibold mb-6" style="color:#c4b5fd">Something went wrong.</p>
+        <a href="/pages/session/setup"
+           class="inline-flex items-center gap-2 font-black px-6 py-3 rounded-xl transition-all"
+           style="background:#fff;color:#2d1265">
+            Start New Session
+        </a>
     </div>
 
     <!-- Results -->
     <div id="results-screen" class="d-none">
-        <div class="results-card my-4">
-            <i class="bi bi-trophy-fill d-block mb-3" style="font-size:3.5rem;color:var(--warning)"></i>
-            <div class="results-score" id="results-correct">0</div>
-            <p style="color:var(--text-muted)" class="mb-1">correct out of <strong id="results-total" style="color:var(--text)">0</strong></p>
-            <p class="mb-3">
-                <span id="results-accuracy" style="color:var(--accent);font-size:1.5rem;font-weight:700">0%</span>
-                <span style="color:var(--text-muted)"> accuracy</span>
+        <div class="rounded-3xl p-10 text-center mt-6 shadow-2xl border-2"
+             style="background:linear-gradient(135deg,#3a1578 0%,#46178F 100%);border-color:rgba(255,255,255,0.2)">
+            <i class="bi bi-trophy-fill block mb-4 text-yellow-300" style="font-size:3.5rem"></i>
+            <div class="text-7xl font-black mb-1 text-white" id="results-correct">0</div>
+            <p class="font-semibold mb-1" style="color:#c4b5fd">
+                correct out of <strong class="text-white" id="results-total">0</strong>
             </p>
-            <p id="results-message" class="small mb-4" style="color:var(--text-muted)"></p>
-            <div class="d-flex flex-wrap justify-content-center gap-2">
-                <a href="/pages/session/setup" class="btn btn-primary">
-                    <i class="bi bi-arrow-repeat me-1"></i>Play Again
+            <p class="mb-4">
+                <span class="text-3xl font-black text-white" id="results-accuracy">0%</span>
+                <span class="font-semibold" style="color:#c4b5fd"> accuracy</span>
+            </p>
+            <p id="results-message" class="text-sm font-semibold mb-7" style="color:#c4b5fd"></p>
+            <div class="flex flex-wrap justify-center gap-3">
+                <a href="/pages/session/setup"
+                   class="inline-flex items-center gap-2 font-black px-6 py-3 rounded-xl transition-all shadow-lg hover:-translate-y-0.5"
+                   style="background:#fff;color:#2d1265">
+                    <i class="bi bi-arrow-repeat"></i>Play Again
                 </a>
-                <a href="/" class="btn btn-outline-primary">
-                    <i class="bi bi-house me-1"></i>Home
+                <a href="/"
+                   class="inline-flex items-center gap-2 border-2 border-white/50 text-white hover:bg-white/15 font-bold px-6 py-3 rounded-xl transition-all">
+                    <i class="bi bi-house"></i>Home
                 </a>
-                <a href="/pages/leaderboard" class="btn btn-outline-secondary">
-                    <i class="bi bi-trophy me-1"></i>Leaderboard
+                <a href="/pages/leaderboard"
+                   class="inline-flex items-center gap-2 border-2 font-bold px-6 py-3 rounded-xl transition-all"
+                   style="border-color:#6c3dc5;color:#c4b5fd"
+                   onmouseover="this.style.background='rgba(108,61,197,0.3)'" onmouseout="this.style.background=''">
+                    <i class="bi bi-trophy"></i>Leaderboard
                 </a>
             </div>
         </div>
     </div>
+
+</div>
+
+<!-- ══ KAHOOT GAME SCREEN ══ -->
+<div id="game-screen" class="d-none kahoot-game">
+
+    <!-- Top bar: question counter | score | end -->
+    <div class="kahoot-header">
+        <div class="kahoot-q-badge">
+            <i class="bi bi-list-ol mr-1"></i>Q <span id="progress-text">1 / 10</span>
+        </div>
+        <div class="kahoot-score-badge">
+            <i class="bi bi-lightning-charge-fill" style="color:#FFA602"></i>
+            <span id="current-score">0</span>
+        </div>
+        <button id="end-session-btn"
+                style="background:rgba(255,255,255,0.15);color:#fff;border:none;font-weight:800;border-radius:20px;padding:0.3rem 0.9rem;cursor:pointer;font-family:'Nunito',sans-serif">
+            <i class="bi bi-stop-circle mr-1"></i>End
+        </button>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="kahoot-timer-bar">
+        <div class="kahoot-timer-fill" id="progress-bar" style="width:0%"></div>
+    </div>
+
+    <!-- Feedback banner -->
+    <div id="feedback-banner" class="kahoot-feedback"></div>
+
+    <!-- Question -->
+    <div class="kahoot-question-area">
+        <p class="kahoot-question-text" id="question-text">Loading...</p>
+    </div>
+
+    <!-- 2×2 answer grid (filled by play.js) -->
+    <div id="answers-container" class="kahoot-answers"></div>
 
 </div>
 

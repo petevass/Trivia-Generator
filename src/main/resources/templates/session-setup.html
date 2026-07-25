@@ -4,20 +4,27 @@
 <body>
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
 
-<div class="container my-5" style="max-width:600px">
-    <div class="text-center mb-4">
-        <h2 class="fw-bold">Configure Your Session</h2>
-        <p style="color:var(--text-muted)">Choose your trivia settings and start playing</p>
+<main class="flex-1">
+<div class="max-w-xl mx-auto px-4 mt-12 mb-16">
+
+    <div class="text-center mb-7">
+        <h2 class="text-3xl font-black mb-2 text-white">Configure Your Session</h2>
+        <p class="font-semibold" style="color:#c4b5fd">Choose your trivia settings and start playing</p>
     </div>
 
-    <div class="card p-4">
-        <div id="setup-error" class="alert-custom mb-3"></div>
+    <div class="rounded-2xl p-7 shadow-xl" style="background:#3a1578;border:1px solid #5d2dac">
+
+        <div id="setup-error" class="alert-custom mb-5"></div>
 
         <form id="setup-form" novalidate>
+
             <!-- Category -->
-            <div class="mb-4">
-                <label class="form-label">Category</label>
-                <select class="form-select" id="category-select">
+            <div class="mb-6">
+                <label for="category-select" class="block text-xs font-black uppercase tracking-wider mb-2" style="color:#c4b5fd">Category</label>
+                <select id="category-select"
+                        class="w-full text-white rounded-xl px-4 py-2.5 outline-none font-semibold cursor-pointer transition-colors"
+                        style="background:#2d1265;border:2px solid #5d2dac"
+                        onfocus="this.style.borderColor='#fff'" onblur="this.style.borderColor='#5d2dac'">
                     <option value="any">Any Category</option>
                     <option value="general knowledge">General Knowledge</option>
                     <option value="books">Books</option>
@@ -47,8 +54,8 @@
             </div>
 
             <!-- Difficulty -->
-            <div class="mb-4">
-                <label class="form-label">Difficulty</label>
+            <div class="mb-6">
+                <label class="block text-xs font-black uppercase tracking-wider mb-3" style="color:#c4b5fd">Difficulty</label>
                 <div>
                     <button type="button" class="option-btn selected" data-difficulty="any">Any</button>
                     <button type="button" class="option-btn" data-difficulty="easy">Easy</button>
@@ -57,9 +64,9 @@
                 </div>
             </div>
 
-            <!-- Type -->
-            <div class="mb-4">
-                <label class="form-label">Question Type</label>
+            <!-- Question Type -->
+            <div class="mb-6">
+                <label class="block text-xs font-black uppercase tracking-wider mb-3" style="color:#c4b5fd">Question Type</label>
                 <div>
                     <button type="button" class="option-btn selected" data-type="any">Any</button>
                     <button type="button" class="option-btn" data-type="multiple">Multiple Choice</button>
@@ -67,25 +74,30 @@
                 </div>
             </div>
 
-            <!-- Amount -->
-            <div class="mb-5">
-                <label class="form-label">
+            <!-- Amount slider -->
+            <div class="mb-8">
+                <label for="amount-slider" class="block text-xs font-black uppercase tracking-wider mb-3" style="color:#c4b5fd">
                     Number of Questions:
-                    <span id="amount-display" class="fw-bold ms-1" style="color:var(--accent)">10</span>
+                    <span id="amount-display" class="ml-1 text-white">10</span>
                 </label>
-                <input type="range" class="form-range" id="amount-slider" min="1" max="50" value="10"/>
-                <div class="d-flex justify-content-between mt-1">
-                    <small style="color:var(--text-muted)">1</small>
-                    <small style="color:var(--text-muted)">50</small>
+                <input type="range" id="amount-slider" min="1" max="50" value="10"
+                       class="w-full cursor-pointer" style="accent-color:#a78bfa"/>
+                <div class="flex justify-between mt-1">
+                    <span class="text-xs font-bold" style="color:#7c5fc0">1</span>
+                    <span class="text-xs font-bold" style="color:#7c5fc0">50</span>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100 py-2" id="start-btn">
-                <i class="bi bi-play-fill me-2"></i>Start Session
+            <button type="submit" id="start-btn"
+                    class="w-full font-black py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 text-lg active:scale-[0.98]"
+                    style="background:#fff;color:#2d1265"
+                    onmouseover="this.style.background='#e9d5ff'" onmouseout="this.style.background='#fff'">
+                <i class="bi bi-play-fill"></i>Start Session
             </button>
         </form>
     </div>
 </div>
+</main>
 
 <footer th:replace="~{fragments/layout :: footer}"></footer>
 <th:block th:replace="~{fragments/layout :: scripts}"/>

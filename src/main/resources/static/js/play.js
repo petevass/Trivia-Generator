@@ -4,6 +4,10 @@ let questionsAnswered = 0;
 let score          = 0;
 let locked         = false; // prevent double-answers
 
+// Kahoot answer styles: shape icon + color class
+const SHAPES = ['▲', '◆', '●', '■'];
+const COLORS  = ['color-0', 'color-1', 'color-2', 'color-3'];
+
 document.addEventListener('DOMContentLoaded', async () => {
     if (!requireAuth()) return;
 
@@ -46,17 +50,22 @@ async function loadFirstQuestion() {
 
 function displayQuestion(question, options) {
     locked = false;
-    document.getElementById('feedback-banner').style.display = 'none';
+
+    // Reset feedback banner
+    const banner = document.getElementById('feedback-banner');
+    banner.style.display = 'none';
+    banner.className = 'kahoot-feedback';
+
     document.getElementById('question-text').innerHTML = decode(question);
 
     const container = document.getElementById('answers-container');
     container.innerHTML = '';
 
-    options.forEach(opt => {
+    options.forEach((opt, i) => {
         const btn = document.createElement('button');
-        btn.className      = 'answer-btn';
-        btn.innerHTML      = decode(opt);
-        btn.dataset.raw    = opt; // raw value for submission
+        btn.className   = `answer-btn ${COLORS[i % 4]}`;
+        btn.innerHTML   = `<span class="answer-shape">${SHAPES[i % 4]}</span><span>${decode(opt)}</span>`;
+        btn.dataset.raw = opt;
         btn.addEventListener('click', () => submitAnswer(opt, btn));
         container.appendChild(btn);
     });
@@ -97,7 +106,7 @@ async function submitAnswer(answer, clicked) {
         } else {
             // Game over — EndingResponse
             questionsAnswered++;
-            sessionId = null; // prevent beforeunload from hitting end_session again
+            sessionId = null; // prevent beforeunload from double-firing
             localStorage.removeItem('trivia_session_id');
             localStorage.removeItem('trivia_amount');
             showResults(data);
@@ -125,7 +134,7 @@ function showResults(data) {
 async function endEarly() {
     if (!confirm('End this session? Progress will not be saved.')) return;
     try {
-        alert(getToken())
+
         await authFetch('/api/session/end_session', {
             method: 'GET',
             header:{
@@ -142,7 +151,7 @@ async function endEarly() {
 
 function showFeedback(correct, correctAnswer) {
     const el = document.getElementById('feedback-banner');
-    el.className = 'feedback-banner ' + (correct ? 'correct' : 'wrong');
+    el.className = 'kahoot-feedback ' + (correct ? 'correct' : 'wrong');
     el.innerHTML = correct
         ? '<i class="bi bi-check-circle-fill me-2"></i>Correct!'
         : `<i class="bi bi-x-circle-fill me-2"></i>Wrong! Answer: <strong>${decode(correctAnswer)}</strong>`;
@@ -160,6 +169,8 @@ function showScreen(name) {
     ['loading', 'error', 'game', 'results'].forEach(s => {
         document.getElementById(s + '-screen').classList.toggle('d-none', s !== name);
     });
+    // Activate full-screen Kahoot mode (hides footer and static container)
+    document.body.classList.toggle('game-active', name === 'game');
 }
 
 function showError(msg) {
