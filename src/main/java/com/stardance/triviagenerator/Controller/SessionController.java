@@ -73,7 +73,7 @@ public class SessionController {
         }
 
         if(sessionRepository.existsByUserId(user.getId())){
-            return ResponseEntity.status(401).body("User already has a session open");
+            endSession(user);
         }
 
         s.setUserId(user.getId());

@@ -38,6 +38,7 @@ class Layout extends StatelessWidget{
       child: Scaffold(
 
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.deepPurple,
         toolbarHeight: 70,
         title: Row(
@@ -51,27 +52,31 @@ class Layout extends StatelessWidget{
               unselectedLabelColor: Colors.white,
                 tabs: getTabs(),
 
-                onTap:(index)=>{
+                onTap:(index){
                   if (isLoggedIn() == true) {
                     if (index == 0) {
-                      Navigator.pushReplacementNamed(context, "/")
-                     } else if (index == 1) {
-                      Navigator.pushReplacementNamed(context, "/leaderboard")
-                    } else if (index == 2) {
-                    Navigator.pushReplacementNamed(context, "/play")
-                    } else if (index == 3) {
-                    Navigator.pushReplacementNamed(context, "/profile")
-                    } else if (index == 4) {
-                      Navigator.pushReplacementNamed(context, "/logout")
-                    }
-        } else {
-    if (index == 0) {
-    Navigator.pushReplacementNamed(context, "/")
+                      Navigator.pushReplacementNamed(context, "/");
+                    } else
+                      if (index == 1) {
+                        Navigator.pushReplacementNamed(context, "/leaderboard");
+                      } else
+                        if (index == 2) {
+                          Navigator.pushReplacementNamed(context, "/play");
+                        } else
+                          if (index == 3) {
+                            Navigator.pushReplacementNamed(context, "/profile");
+                          } else if (index == 4) {
+                          logOut();
+                               Navigator.pushReplacementNamed(context, "/");
+                          }
+                }else {
+                    if (index == 0) {
+    Navigator.pushReplacementNamed(context, "/");
     } else if (index == 1) {
-    Navigator.pushReplacementNamed(context, "/login")
+    Navigator.pushReplacementNamed(context, "/login");
 
     } else if (index == 2) {
-    Navigator.pushReplacementNamed(context, "/register")
+    Navigator.pushReplacementNamed(context, "/register");
     }
     }
 

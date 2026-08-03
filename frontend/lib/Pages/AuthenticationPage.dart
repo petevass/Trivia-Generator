@@ -58,6 +58,20 @@ class AuthenticationPageState extends State<AuthenticationPage> {
         child: Center(
             child: Column(
                 children: [
+                  SizedBox(
+                    height:15
+                  ),
+                  Container(
+                    alignment: AlignmentGeometry.center,
+                    width: error == "" ? 0 : 425,
+                    height: error == "" ? 0: 35,
+                    decoration: error == "" ? null : BoxDecoration(
+                        border: Border.all(color: Colors.red.shade900, width: 3)
+                    ),
+                    child: Text(error,
+                        style: GoogleFonts.novaSquare(fontSize: 15, color: Colors.red.shade900)
+                    ),
+                  ),
                   Text("Register", style: GoogleFonts.novaSquare(fontSize: 40, color: Colors.white),),
 
                   SizedBox(height:20),
@@ -95,17 +109,17 @@ class AuthenticationPageState extends State<AuthenticationPage> {
                   SizedBox(height:40),
                   ElevatedButton(onPressed: ()async {
                     int code = await Register(usernameTecRegister.text, passTecRegister.text);
+                    if(code != 200){
+                      setError("This Username Already Has An Account");
 
-                    if(code == 200){
+                    }else if(code == 200){
                       setError("");
                       Navigator.pushReplacementNamed(context, "/");
-                    }else{
-                      setError("This Username Already Has An Account");
                     }
 
                   }, child: Text("Register")),
 
-                  SizedBox(height: 80),
+                  SizedBox(height: 60),
                   Row(
                     children: [
                       SizedBox(width: 100),
