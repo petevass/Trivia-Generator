@@ -59,3 +59,44 @@ class LeaderboardResponse{
   return LeaderboardResponse(rows: rows);
   }
 }
+
+class GetQuestion{
+
+  String sessionId;
+  String firstQuestion;
+  List<String> options;
+
+  GetQuestion({required this.sessionId, required this.firstQuestion, required this.options});
+
+  factory GetQuestion.fromJson(Map<String, dynamic> json){
+    return GetQuestion(
+      sessionId: json["sessionId"],
+      firstQuestion: json["firstQuestion"],
+      options: List<String>.from(json["options"])
+    );
+  }
+
+}
+
+class CheckQuestion{
+
+  String sessionId;
+  bool wasCorrect;
+  String correctAnswer;
+  String nextQuestion;
+  List<String> option;
+
+  CheckQuestion({required this.sessionId, required this.wasCorrect, required this.correctAnswer, required this.nextQuestion, required this.option});
+
+  factory CheckQuestion.fromJson(Map<String, dynamic> json){
+    return CheckQuestion(
+      sessionId: json["sessionId"],
+      wasCorrect: json["wasCorrect"],
+      correctAnswer: json["correctAnswer"],
+      nextQuestion: json["nextQuestion"],
+      option: List<String>.from(json["options"])
+    );
+  }
+
+}
+

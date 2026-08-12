@@ -14,7 +14,7 @@ class fetch{
   }
 
   Future<http.Response> _post(String url, Map<String, String> headers, Map<String, dynamic> body)async{
-    final resp = await http.post(Uri.parse(url), headers: headers, body: body);
+    final resp = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(body));
     return resp;
   }
 
@@ -28,6 +28,36 @@ class fetch{
 
     return responses.rows;
   }
+
+  Future<GetQuestion> getInitialQuestion(String category, String difficulty, String type, int amount) async{
+      String? token = getToken();
+      final SessionIdResp = await _post("https://stardance-hosting.tail5b0cb9.ts.net/api/session/start", {
+        "Content-Type":"application/json",
+        "Authorization":"Bearer $token"
+      },
+          {
+            "category":category,
+            "difficulty":difficulty,
+            "type":type,
+            "amount":amount
+          }
+      );
+
+      String sessionId = jsonDecode(SessionIdResp.body)["sessionId"];
+      setSessionId(sessionId);
+      final questionResp = await _post("https://stardance-hosting.tail5b0cb9.ts.net/api/session/get_questions", {
+        "Content-Type":"application/json",
+        "Authorization":"Bearer $token"
+      },
+      {
+       "sessionId":sessionId
+      });
+
+      GetQuestion gq = await new GetQuestion.fromJson(jsonDecode(questionResp.body));
+
+      return gq;
+  }
+
 
   Future<List<TableRow>> fetchCorrectLeaderboard()async{
     String? token = getToken();

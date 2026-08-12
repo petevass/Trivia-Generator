@@ -7,26 +7,35 @@ import "dart:convert";
 bool? isLoggedIn(){
 
 
-  String? isLoggedIn = web.window.localStorage.getItem("logged-in");
+  String? isLoggedIn = web.window.sessionStorage.getItem("logged-in");
   return isLoggedIn == 'true';
 }
 
 void setToken(String token) {
 
 
-  web.window.localStorage.setItem("trivia-token", token);
-  web.window.localStorage.setItem("logged-in", 'true');
+  web.window.sessionStorage.setItem("trivia-token", token);
+  web.window.sessionStorage.setItem("logged-in", 'true');
 
 }
 
 String? getToken(){
-  return web.window.localStorage.getItem("trivia-token");
+  return web.window.sessionStorage.getItem("trivia-token");
 }
 
 void logOut()  {
 
-    web.window.localStorage.setItem("logged-in", 'false');
-    web.window.localStorage.removeItem("trivia-token");
+    web.window.sessionStorage.setItem("logged-in", 'false');
+    web.window.sessionStorage.removeItem("trivia-token");
+}
+
+
+void setSessionId(String id){
+  web.window.sessionStorage.setItem("session-id", id);
+}
+
+String? getSessionId(){
+  return web.window.sessionStorage.getItem("session-id");
 }
 
 Future<int> Authenticate(String username, String password) async{

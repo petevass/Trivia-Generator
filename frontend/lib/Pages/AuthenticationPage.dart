@@ -1,251 +1,267 @@
-import 'package:frontend/auth/authfunctions.dart';
-import'package:web/web.dart' as web;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:frontend/auth/authfunctions.dart';
 
+enum AuthPage { LOGIN, REGISTER }
 
-class AuthenticationPage extends StatefulWidget{
+class AuthenticationPage extends StatefulWidget {
+  final AuthPage? page;
 
-  AuthPage? page;
-
-  AuthenticationPage({super.key, this.page});
-
-
-
-
+  const AuthenticationPage({super.key, this.page});
 
   @override
-  State<StatefulWidget> createState() {
-    return AuthenticationPageState(page);
-  }}
+  State<AuthenticationPage> createState() => _AuthenticationPageState();
+}
 
-class AuthenticationPageState extends State<AuthenticationPage> {
-   AuthPage? page;
-   final TextEditingController usernameTec = TextEditingController();
-   final TextEditingController passTec = TextEditingController();
-    String error = "";
-   final TextEditingController usernameTecRegister = TextEditingController();
-   final TextEditingController passTecRegister = TextEditingController();
-  AuthenticationPageState(this.page);
+class _AuthenticationPageState extends State<AuthenticationPage> {
+  final TextEditingController usernameTec = TextEditingController();
+  final TextEditingController passTec = TextEditingController();
+  final TextEditingController usernameTecRegister = TextEditingController();
+  final TextEditingController passTecRegister = TextEditingController();
+
+  String error = "";
 
   @override
-  void dispose(){
+  void dispose() {
     usernameTec.dispose();
     passTec.dispose();
+    usernameTecRegister.dispose();
+    passTecRegister.dispose();
     super.dispose();
   }
 
-
-
-  void setError(String error){
+  void setError(String message) {
     setState(() {
-      this.error = error;
+      error = message;
     });
   }
 
-  Widget getRegister(){
+  Widget getRegister() {
     return Container(
-        width:500,
-        height:500,
+      width: 500,
+      constraints: const BoxConstraints(maxHeight: 650),
+      decoration: BoxDecoration(
+        color: Colors.blue.shade400,
+        border: Border.all(color: Colors.blue),
+      ),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (error.isNotEmpty) ...[
+              Container(
+                alignment: Alignment.center,
+                width: 425,
+                height: 35,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.red.shade900, width: 3),
+                ),
+                child: Text(
+                  error,
+                  style: GoogleFonts.novaSquare(fontSize: 15, color: Colors.red.shade900),
+                ),
+              ),
+              const SizedBox(height: 15),
+            ],
+            Text(
+              "Register",
+              style: GoogleFonts.novaSquare(fontSize: 40, color: Colors.white),
+            ),
+            const SizedBox(height: 20),
 
-        decoration: BoxDecoration(
-            color: Colors.blue.shade400,
-            border: Border.all(
-                color: Colors.blue
-            )
+            Text(
+              "Username",
+              style: GoogleFonts.novaSquare(fontSize: 20, color: Colors.white),
+            ),
+            SizedBox(
+              width: 400,
+              child: TextField(
+                controller: usernameTecRegister,
+                autocorrect: false,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            Text(
+              "Password",
+              style: GoogleFonts.novaSquare(fontSize: 20, color: Colors.white),
+            ),
+            SizedBox(
+              width: 400,
+              child: TextField(
+                controller: passTecRegister,
+                obscureText: true,
+                autocorrect: false,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+              ),
+            ),
+            const SizedBox(height: 30),
+
+            ElevatedButton(
+              onPressed: () async {
+                int code = await Register(usernameTecRegister.text, passTecRegister.text);
+                if (!mounted) return;
+
+                if (code != 200) {
+                  setError("This Username Already Has An Account");
+                } else {
+                  setError("");
+                  Navigator.pushReplacementNamed(context, "/");
+                }
+              },
+              child: const Text("Register"),
+            ),
+
+            const SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Already have an Account?",
+                  style: GoogleFonts.novaSquare(fontSize: 15, color: Colors.white),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    setError("");
+                    Navigator.pushReplacementNamed(context, "/login");
+                  },
+                  child: const Text("Log in"),
+                ),
+              ],
+            ),
+          ],
         ),
-        child: Center(
-            child: Column(
-                children: [
-                  SizedBox(
-                    height:15
-                  ),
-                  Container(
-                    alignment: AlignmentGeometry.center,
-                    width: error == "" ? 0 : 425,
-                    height: error == "" ? 0: 35,
-                    decoration: error == "" ? null : BoxDecoration(
-                        border: Border.all(color: Colors.red.shade900, width: 3)
-                    ),
-                    child: Text(error,
-                        style: GoogleFonts.novaSquare(fontSize: 15, color: Colors.red.shade900)
-                    ),
-                  ),
-                  Text("Register", style: GoogleFonts.novaSquare(fontSize: 40, color: Colors.white),),
-
-                  SizedBox(height:20),
-
-                  Text("Username", style: GoogleFonts.novaSquare(fontSize: 20, color:Colors.white)),
-                  SizedBox(
-                      width:500*.80,
-                      child:TextField(
-                        controller: usernameTecRegister,
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            filled: true,
-                            fillColor: Colors.white
-                        ),
-                      )
-                  ),
-                  SizedBox(height:40),
-                  Text(
-                    "Password",
-                    style: GoogleFonts.novaSquare(fontSize:20, color: Colors.white),
-                  ),
-                  SizedBox(
-                      width:500*.80,
-                      child:TextField(
-                        controller: passTecRegister,
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            filled: true,
-                            fillColor: Colors.white
-                        ),
-                      )
-                  ),
-                  SizedBox(height:40),
-                  ElevatedButton(onPressed: ()async {
-                    int code = await Register(usernameTecRegister.text, passTecRegister.text);
-                    if(code != 200){
-                      setError("This Username Already Has An Account");
-
-                    }else if(code == 200){
-                      setError("");
-                      Navigator.pushReplacementNamed(context, "/");
-                    }
-
-                  }, child: Text("Register")),
-
-                  SizedBox(height: 60),
-                  Row(
-                    children: [
-                      SizedBox(width: 100),
-                      Text("Already have an Account?",
-                          style: GoogleFonts.novaSquare(fontSize: 15, color: Colors.white)
-                      ),
-                      SizedBox(width: 10),
-                      ElevatedButton(onPressed: (){
-                        Navigator.pushReplacementNamed(context,"/login");
-                      }, child: Text("Log in"))
-                    ],
-                  )
-                ]
-            )
-        )
-    );
-  }
-
-  Widget getLogIn(){
-    return Container(
-        width:500,
-        height:500,
-
-        decoration: BoxDecoration(
-            color: Colors.blue.shade400,
-            border: Border.all(
-                color: Colors.blue
-            )
-        ),
-        child: Center(
-            child: Column(
-                children: [
-                  SizedBox(
-                    height:15
-                  ),
-                  Container(
-                    alignment: AlignmentGeometry.center,
-                    width: error == "" ? 0 : 425,
-                    height: error == "" ? 0: 35,
-                    decoration: error == "" ? null : BoxDecoration(
-                      border: Border.all(color: Colors.red.shade900, width: 3)
-                    ),
-                    child: Text(error,
-                        style: GoogleFonts.novaSquare(fontSize: 15, color: Colors.red.shade900)
-                    ),
-                  ),
-                  Text("Log In", style: GoogleFonts.novaSquare(fontSize: 40, color: Colors.white),),
-
-                  SizedBox(height:20),
-
-                  Text("Username", style: GoogleFonts.novaSquare(fontSize: 20, color:Colors.white)),
-                  SizedBox(
-                      width:500*.80,
-                      child:TextField(
-                        controller: usernameTec,
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            filled: true,
-                            fillColor: Colors.white,
-                                                    ),
-                      )
-                  ),
-                  SizedBox(height:40),
-                  Text(
-                    "Password",
-                    style: GoogleFonts.novaSquare(fontSize:20, color: Colors.white),
-
-                  ),
-                  SizedBox(
-                      width:500*.80,
-                      child:TextField(
-                        controller: passTec,
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            filled: true,
-                            fillColor: Colors.white
-                        ),
-                      )
-                  ),
-                  SizedBox(height:40),
-                  ElevatedButton(onPressed: ()async {
-                    int status = await Authenticate(usernameTec.text, passTec.text);
-                    if(status == 403){
-                      setError("Username and Password do not work");
-                    }else if(status == 200){
-                      setError("");
-                      Navigator.pushReplacementNamed(context, "/");
-                    }
-                  }, child: Text("Log In")),
-
-                  SizedBox(height: 60),
-                  Row(
-                    children: [
-                      SizedBox(width: 100),
-                      Text("Don't have an Account?",
-                          style: GoogleFonts.novaSquare(fontSize: 15, color: Colors.white)
-                      ),
-                      SizedBox(width: 10),
-                      ElevatedButton(onPressed: (){Navigator.pushReplacementNamed(context, "/register");}, child: Text("Register"))
-                    ],
-                  )
-                ]
-            )
-        )
-    );
-  }
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body:Center(
-        child: this.page == AuthPage.REGISTER ? getRegister() : getLogIn()
-
-
-
       ),
     );
   }
 
-}
+  Widget getLogIn() {
+    return Container(
+      width: 500,
+      constraints: const BoxConstraints(maxHeight: 650),
+      decoration: BoxDecoration(
+        color: Colors.blue.shade400,
+        border: Border.all(color: Colors.blue),
+      ),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (error.isNotEmpty) ...[
+              Container(
+                alignment: Alignment.center,
+                width: 425,
+                height: 35,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.red.shade900, width: 3),
+                ),
+                child: Text(
+                  error,
+                  style: GoogleFonts.novaSquare(fontSize: 15, color: Colors.red.shade900),
+                ),
+              ),
+              const SizedBox(height: 15),
+            ],
+            Text(
+              "Log In",
+              style: GoogleFonts.novaSquare(fontSize: 40, color: Colors.white),
+            ),
+            const SizedBox(height: 20),
 
-enum AuthPage{
-  LOGIN,
-  REGISTER
+            Text(
+              "Username",
+              style: GoogleFonts.novaSquare(fontSize: 20, color: Colors.white),
+            ),
+            SizedBox(
+              width: 400,
+              child: TextField(
+                controller: usernameTec,
+                autocorrect: false,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            Text(
+              "Password",
+              style: GoogleFonts.novaSquare(fontSize: 20, color: Colors.white),
+            ),
+            SizedBox(
+              width: 400,
+              child: TextField(
+                controller: passTec,
+                obscureText: true,
+                autocorrect: false,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+              ),
+            ),
+            const SizedBox(height: 30),
+
+            ElevatedButton(
+              onPressed: () async {
+                int status = await Authenticate(usernameTec.text, passTec.text);
+                if (!mounted) return;
+
+                if (status == 403) {
+                  setError("Username and Password do not work");
+                } else if (status == 200) {
+                  setError("");
+                  Navigator.pushReplacementNamed(context, "/");
+                }
+              },
+              child: const Text("Log In"),
+            ),
+
+            const SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Don't have an Account?",
+                  style: GoogleFonts.novaSquare(fontSize: 15, color: Colors.white),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    setError("");
+                    Navigator.pushReplacementNamed(context, "/register");
+                  },
+                  child: const Text("Register"),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: widget.page == AuthPage.REGISTER ? getRegister() : getLogIn(),
+      ),
+    );
+  }
 }

@@ -47,6 +47,6 @@ public class Session {
             name = "questions",
             joinColumns = @JoinColumn(name = "trivia_id")
     )
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<Question> questions = new ArrayList<>();
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Pages/AuthenticationPage.dart';
 import 'package:frontend/Pages/Leaderboard.dart';
+import 'package:frontend/Pages/Play.dart';
 import 'package:frontend/auth/authfunctions.dart';
 import 'package:frontend/layout.dart';
-import 'package:web/web.dart' as web;
 import 'Pages/Index.dart';
 import 'Pages/Profile.dart';
 
@@ -14,67 +14,77 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorObservers: [RouteObserver()],
+      navigatorObservers: [AppRouteObserver()],
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.lightBlueAccent),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
       ),
-
       initialRoute: "/",
-      routes:{
-        "/" : (context)=>Layout(activeIndex: 0, body:const Index()),
-        "/login": (context) => Layout(activeIndex: 1, body: AuthenticationPage(page: AuthPage.LOGIN)),
-        "/register":(context) => Layout(activeIndex: 2, body: AuthenticationPage(page: AuthPage.REGISTER)),
-        "/leaderboard":(context){
-          if(isLoggedIn() == false){
-            Navigator.pushReplacementNamed(context, "/login");
-            return Layout(activeIndex: 1, body: AuthenticationPage(page: AuthPage.LOGIN));
+      routes: {
+        "/": (context) => Layout(activeIndex: 0, body: const Index()),
+        "/login": (context) => Layout(
+          activeIndex: 1,
+          body: AuthenticationPage(page: AuthPage.LOGIN),
+        ),
+        "/register": (context) => Layout(
+          activeIndex: 2,
+          body: AuthenticationPage(page: AuthPage.REGISTER),
+        ),
+        "/leaderboard": (context) {
+          if (true != isLoggedIn()) {
+            return Layout(
+              activeIndex: 1,
+              body: AuthenticationPage(page: AuthPage.LOGIN),
+            );
           }
           return Layout(activeIndex: 1, body: Leaderboard());
         },
-        "/profile":(context){
-          if(isLoggedIn() == false){
-            Navigator.pushReplacementNamed(context, "/login");
-            return Layout(activeIndex: 1, body: AuthenticationPage(page: AuthPage.LOGIN));
+        "/profile": (context) {
+          if (isLoggedIn() != true) {
+            return Layout(
+              activeIndex: 1,
+              body: AuthenticationPage(page: AuthPage.LOGIN),
+            );
           }
           return Layout(activeIndex: 3, body: Profile());
-        }
+        },
+        "/play": (context) {
+          if (isLoggedIn() == false) {
+            return Layout(
+              activeIndex: 1,
+              body: AuthenticationPage(page: AuthPage.LOGIN),
+            );
+          }
+          return Layout(activeIndex: 2, body: PlayPage());
+        },
       },
     );
   }
 }
 
-class RouteObserver extends NavigatorObserver{
-
+class AppRouteObserver extends NavigatorObserver {
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPush(route, previousRoute);
-    handleRequest(route.settings.name);
-
-
+    _handleRequest(route.settings.name);
   }
 
   @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
-
-    if(newRoute != null){
-      handleRequest(newRoute.settings.name);
+    if (newRoute != null) {
+      _handleRequest(newRoute.settings.name);
     }
-
   }
 
-  void handleRequest(String? route){
-    if((route == "/login" || route == "/register")&& isLoggedIn() == true){
-      web.window.location.href = "/";
+  void _handleRequest(String? routeName) {
+    if ((routeName == "/login" || routeName == "/register") && isLoggedIn() == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        navigator?.pushReplacementNamed("/");
+      });
     }
-
   }
-
 }
-
-
